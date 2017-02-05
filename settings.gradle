@@ -1,2 +1,3 @@
 include ':app', ':SlidingMenuLibrary'
 project(':SlidingMenuLibrary').projectDir = new File('SlidingMenu-master/library')
+include ':SlidingMenu_library'

@@ -14,10 +14,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.utils.CacheUtils;
+import com.atguigu.beijingnews.utils.DensityUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -46,7 +46,6 @@ public class GuideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         ButterKnife.inject(this);
-        Toast.makeText(GuideActivity.this, "1111111111", Toast.LENGTH_SHORT).show();
         initData();
     }
 
@@ -62,7 +61,6 @@ public class GuideActivity extends AppCompatActivity {
 
 
     private void initData() {
-        Toast.makeText(GuideActivity.this, "22222222", Toast.LENGTH_SHORT).show();
         //设置适配器
         viewpager.setAdapter(new MyPagerAdapter());
         //监听页面的改变
@@ -70,10 +68,10 @@ public class GuideActivity extends AppCompatActivity {
 //        根据页面数量添加点的数量
         for (int i = 0; i < ids.length; i++) {
             ImageView imageView = new ImageView(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10, 10);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(this,10), DensityUtil.dip2px(this,10));
             if (i != 0) {
                 //设置点的间距
-                params.leftMargin = 10;
+                params.leftMargin = DensityUtil.dip2px(this,10);
             }
             imageView.setLayoutParams(params);
             imageView.setImageResource(R.drawable.point_normal);
@@ -177,7 +175,7 @@ public class GuideActivity extends AppCompatActivity {
     @OnClick(R.id.btn_start_main)
     public void onClick() {
         //1.保存已进过引导页面，下次就不再进
-        CacheUtils.putBoolean(this,"aiguigu",true);
+        CacheUtils.putBoolean(this,"start_main",true);
         //2.直接进入主页面
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);

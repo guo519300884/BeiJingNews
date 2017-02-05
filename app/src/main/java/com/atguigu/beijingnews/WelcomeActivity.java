@@ -11,6 +11,8 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
 import com.atguigu.beijingnews.activity.GuideActivity;
+import com.atguigu.beijingnews.activity.MainActivity;
+import com.atguigu.beijingnews.utils.CacheUtils;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -68,7 +70,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
 //            Toast.makeText(WelcomeActivity.this, "555555", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(WelcomeActivity.this,GuideActivity.class);
+            boolean startMain = CacheUtils.getBoolean(WelcomeActivity.this,"start_main");
+            Intent intent = null;
+            if(startMain) {
+                intent = new Intent(WelcomeActivity.this,MainActivity.class);
+            }else {
+                intent = new Intent(WelcomeActivity.this,GuideActivity.class);
+            }
             startActivity(intent);
             finish();
 
