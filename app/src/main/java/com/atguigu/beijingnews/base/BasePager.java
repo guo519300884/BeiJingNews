@@ -39,7 +39,7 @@ public class BasePager {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) mContext;
-                mainActivity.getSlidingMenu().toggle();
+                mainActivity.getSlidingMenu().toggle();//开<->关
             }
         });
 
