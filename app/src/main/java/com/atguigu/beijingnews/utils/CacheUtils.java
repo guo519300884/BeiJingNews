@@ -34,4 +34,25 @@ public class CacheUtils {
         return sp.getBoolean(key,false);
     }
 
+    /**
+     * 缓存的文本信息
+     * @param context
+     * @param key
+     * @param value
+     */
+    public static void putString(Context context, String key, String value){
+        SharedPreferences sp = context.getSharedPreferences("atguigu",Context.MODE_PRIVATE);
+        sp.edit().putString(key,value).commit();
+    }
+
+    /**
+     * 读取缓存的文本信息
+     * @param context
+     * @param key
+     * @return
+     */
+    public static String getString(Context context, String key) {
+        SharedPreferences sp = context.getSharedPreferences("atguigu",Context.MODE_PRIVATE);
+        return sp.getString(key,"");
+    }
 }
