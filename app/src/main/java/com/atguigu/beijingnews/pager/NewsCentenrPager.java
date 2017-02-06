@@ -118,7 +118,8 @@ public class NewsCentenrPager extends BasePager {
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
         //2.绑定数据
         menuDetailBasePagers = new ArrayList<>();
-        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity));//新闻
+//        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity));//新闻
+        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity,dataBeanList.get(0)));//新闻详情页
         menuDetailBasePagers.add(new TopicMenuDetailPager(mainActivity));//专题
         menuDetailBasePagers.add(new PhotosMenuDetailPager(mainActivity));//图片
         menuDetailBasePagers.add(new InteracMenuDetailPager(mainActivity));//互动

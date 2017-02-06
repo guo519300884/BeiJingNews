@@ -7,19 +7,22 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.atguigu.beijingnews.base.MenuDetailBasePager;
+import com.atguigu.beijingnews.bean.NewsCenterBean;
 
 /**
  * Created by 皇 上 on 2017/2/6.
  */
+public class TabDetailPagers extends MenuDetailBasePager{
 
-public class PhotosMenuDetailPager extends MenuDetailBasePager {
+    private final NewsCenterBean.DataBean.ChildrenBean childrenBean;
 
-    public PhotosMenuDetailPager(Context context) {
+    public TabDetailPagers(Context context, NewsCenterBean.DataBean.ChildrenBean childrenBean) {
         super(context);
+        this.childrenBean = childrenBean;
     }
 
-    private TextView textView;
 
+    private TextView textView;
     @Override
     public View initView() {
         //图组详情页面的视图
@@ -33,6 +36,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
     @Override
     public void initData() {
         super.initData();
-        textView.setText("看图知天下");
+        //设置数据
+        textView.setText(childrenBean.getTitle());
     }
 }
