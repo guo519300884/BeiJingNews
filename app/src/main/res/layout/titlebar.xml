@@ -20,6 +20,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="7dp"
         android:background="@android:color/transparent"
+        android:visibility="gone"
         android:src="@drawable/img_menu" />
 
 

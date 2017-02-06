@@ -2,6 +2,7 @@ package com.atguigu.beijingnews.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ public class SettingPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
+        Log.e("TAG","设置预加载");
         //标题
         tv_title.setText("设置");
         //内容
