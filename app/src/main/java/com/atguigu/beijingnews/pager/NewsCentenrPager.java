@@ -9,7 +9,13 @@ import android.widget.TextView;
 
 import com.atguigu.beijingnews.activity.MainActivity;
 import com.atguigu.beijingnews.base.BasePager;
+import com.atguigu.beijingnews.base.MenuDetailBasePager;
 import com.atguigu.beijingnews.bean.NewsCenterBean;
+import com.atguigu.beijingnews.detailpager.InteracMenuDetailPager;
+import com.atguigu.beijingnews.detailpager.NewsMenuDetailPager;
+import com.atguigu.beijingnews.detailpager.PhotosMenuDetailPager;
+import com.atguigu.beijingnews.detailpager.TopicMenuDetailPager;
+import com.atguigu.beijingnews.detailpager.VoteMenuDetailPager;
 import com.atguigu.beijingnews.fragment.LeftMenuFragment;
 import com.atguigu.beijingnews.utils.Constants;
 import com.google.gson.Gson;
@@ -18,6 +24,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +32,7 @@ import java.util.List;
  */
 public class NewsCentenrPager extends BasePager {
     private List<NewsCenterBean.DataBean> dataBeanList;
+    private ArrayList<MenuDetailBasePager> menuDetailBasePagers;
 
     public NewsCentenrPager(Context context) {
         super(context);
@@ -92,9 +100,32 @@ public class NewsCentenrPager extends BasePager {
         MainActivity mainActivity = (MainActivity) mContext;
         //得到左侧菜单
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
+        //2.绑定数据
+        menuDetailBasePagers = new ArrayList<>();
+        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity));//新闻
+        menuDetailBasePagers.add(new TopicMenuDetailPager(mainActivity));//专题
+        menuDetailBasePagers.add(new PhotosMenuDetailPager(mainActivity));//图片
+        menuDetailBasePagers.add(new InteracMenuDetailPager(mainActivity));//互动
+        menuDetailBasePagers.add(new VoteMenuDetailPager(mainActivity));//投票
         //调用LeftMenuFragment的setData
         leftMenuFragment.setData(dataBeanList);
-        //2.绑定数据
+
+    }
+
+    /**
+     * 根据位置切换到不同的页面
+     * @param prePosition
+     */
+    public void switchPager(int prePosition) {
+        //设置标题
+        tv_title.setText(dataBeanList.get(prePosition).getTitle());
+
+        MenuDetailBasePager menuDetailBasePager = menuDetailBasePagers.get(prePosition);
+        menuDetailBasePager.initData();
+        //视图
+        View rootview = menuDetailBasePager.rootView;
+        fl_main.removeAllViews();
+        fl_main.addView(rootview);
 
     }
 }

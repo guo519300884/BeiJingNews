@@ -59,21 +59,21 @@ public class ContentFragment extends BaseFragment {
                 //默认设置为不可滑动
                 MainActivity mainActivity = (MainActivity) mContext;
                 mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_home:
 //                        viewpager.setCurrentItem(0);
-                        viewpager.setCurrentItem(0,false);
+                        viewpager.setCurrentItem(0, false);
                         break;
                     case R.id.rb_news:
 //                        viewpager.setCurrentItem(1);
                         //Viewpager 切换到不同页面的方法
-                        viewpager.setCurrentItem(1,false);
+                        viewpager.setCurrentItem(1, false);
                         //点击选中新闻页修改为可滑动
                         mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
                         break;
                     case R.id.rb_setting:
 //                        viewpager.setCurrentItem(2);
-                        viewpager.setCurrentItem(2,false);
+                        viewpager.setCurrentItem(2, false);
                         break;
                 }
             }
@@ -85,6 +85,12 @@ public class ContentFragment extends BaseFragment {
 
         basePagers.get(1).initData();
     }
+
+    //获取到新闻中心
+    public NewsCentenrPager getNewsCentenrPager() {
+        return (NewsCentenrPager) basePagers.get(1);
+    }
+
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
