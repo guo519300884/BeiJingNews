@@ -37,7 +37,7 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
     @InjectView(R.id.ib_next)
     ImageButton ibNext;
     //页签页面集合
-    private ArrayList<TabDetailPagers> tabDetailPagers;
+    private ArrayList<TabDetailPager> tabDetailPagers;
 
     public NewsMenuDetailPager(Context context, NewsCenterBean.DataBean dataBean) {
         super(context);
@@ -60,7 +60,7 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
         tabDetailPagers = new ArrayList<>();
         //根据数据的数量创建相应数量的TabDetailPager,并且将数据传入到对象中
         for (int i = 0; i < childrenData.size(); i++) {
-            tabDetailPagers.add(new TabDetailPagers(mContext, childrenData.get(i)));
+            tabDetailPagers.add(new TabDetailPager(mContext, childrenData.get(i)));
         }
         //设置适配器
         viewpager.setAdapter(new MyPagerAdapter());
@@ -113,7 +113,7 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            TabDetailPagers tabDetailPager = tabDetailPagers.get(position);
+            TabDetailPager tabDetailPager = tabDetailPagers.get(position);
             tabDetailPager.initData();//重点记忆
             View rootView = tabDetailPager.rootView;
             container.addView(rootView);
