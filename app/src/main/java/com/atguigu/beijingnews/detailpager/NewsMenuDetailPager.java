@@ -5,10 +5,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.atguigu.beijingnews.R;
+import com.atguigu.beijingnews.activity.MainActivity;
 import com.atguigu.beijingnews.base.MenuDetailBasePager;
 import com.atguigu.beijingnews.bean.NewsCenterBean;
+import com.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
@@ -16,12 +19,13 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by 皇 上 on 2017/2/6.
  */
 
-public class NewsMenuDetailPager extends MenuDetailBasePager {
+public class NewsMenuDetailPager extends MenuDetailBasePager{
 
     //新闻详情页数据
     private final List<NewsCenterBean.DataBean.ChildrenBean> childrenData;
@@ -30,6 +34,8 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
     ViewPager viewpager;
     @InjectView(R.id.indicator)
     TabPageIndicator indicator;
+    @InjectView(R.id.ib_next)
+    ImageButton ibNext;
     //页签页面集合
     private ArrayList<TabDetailPagers> tabDetailPagers;
 
@@ -62,7 +68,26 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
         //设置适配器后，监听页面的变化 用TabPagerIndicator
         indicator.setViewPager(viewpager);
 
+        indicator.setOnPageChangeListener(new MyOnPageChangeListener());
+
+
+        //点击箭头切换不同页签的详情页
+//        ibNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewpager.setCurrentItem(viewpager.getCurrentItem()+1);
+//            }
+//        });
+
     }
+
+    //点击箭头切换不同页签的详情页
+    @OnClick(R.id.ib_next)
+    public void OnClick() {
+        indicator.setCurrentItem(viewpager.getCurrentItem() + 1);
+    }
+
+
 
     private class MyPagerAdapter extends PagerAdapter {
 
@@ -93,6 +118,31 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
             View rootView = tabDetailPager.rootView;
             container.addView(rootView);
             return rootView;
+        }
+    }
+
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            MainActivity mainActivity = (MainActivity) mContext;
+            if (position == 0) {
+                //当前页是最左侧的详情页便可拖拽出侧滑菜单
+                mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            } else {
+                //当前页不是最左侧的详情页不可拖拽出侧滑菜单
+                mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+            }
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     }
 }
