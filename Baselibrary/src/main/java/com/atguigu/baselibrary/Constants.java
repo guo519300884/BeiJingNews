@@ -1,4 +1,4 @@
-package com.atguigu.beijingnews.utils;
+package com.atguigu.baselibrary;
 
 /**
  * Created by 皇 上 on 2017/2/6.
