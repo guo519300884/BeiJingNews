@@ -104,14 +104,13 @@ public class NewsDetailActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("选择字体大小");
         String items[] = {"超大号字体", "大号字体", "正常字体", "小号字体", "超小号字体"};
-        builder.setSingleChoiceItems(items, currentTextSize,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        tempTextSize = which;
-//                        currentSelectTextSize = which;
-                    }
-                });
+        builder.setSingleChoiceItems(items, currentTextSize, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tempTextSize = which;
+//              currentSelectTextSize = which;
+            }
+        });
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -127,19 +126,24 @@ public class NewsDetailActivity extends AppCompatActivity {
     protected void changeTextSize(int currentTextSize) {
         switch (currentTextSize) {
             case 0://超大
-                webSettings.setTextSize(WebSettings.TextSize.LARGEST);
+                webSettings.setTextZoom(200);
+//                webSettings.setTextSize(WebSettings.TextSize.LARGEST);
                 break;
             case 1://大
-                webSettings.setTextSize(WebSettings.TextSize.LARGER);
+                webSettings.setTextZoom(150);
+//                webSettings.setTextSize(WebSettings.TextSize.LARGER);
                 break;
             case 2://正常
-                webSettings.setTextSize(WebSettings.TextSize.NORMAL);
+                webSettings.setTextZoom(100);
+//                webSettings.setTextSize(WebSettings.TextSize.NORMAL);
                 break;
             case 3://小
-                webSettings.setTextSize(WebSettings.TextSize.SMALLER);
+                webSettings.setTextZoom(75);
+//                webSettings.setTextSize(WebSettings.TextSize.SMALLER);
                 break;
             case 4://超小
-                webSettings.setTextSize(WebSettings.TextSize.SMALLEST);
+                webSettings.setTextZoom(50);
+//                webSettings.setTextSize(WebSettings.TextSize.SMALLEST);
                 break;
             default:
                 break;
