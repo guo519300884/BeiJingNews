@@ -22,7 +22,7 @@ public class SettingPager extends BasePager {
         super.initData();
         Log.e("TAG","设置预加载");
         //标题
-        tv_title.setText("设置");
+        tvTitle.setText("设置");
         //内容
         TextView textView = new TextView(mContext);
         textView.setTextSize(20);
@@ -31,6 +31,6 @@ public class SettingPager extends BasePager {
         textView.setTextColor(Color.RED);
 
         //和父类的FragmentLayout结合一起
-        fl_main.addView(textView);
+        flMain.addView(textView);
     }
 }

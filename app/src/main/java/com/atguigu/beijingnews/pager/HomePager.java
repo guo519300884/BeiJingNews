@@ -21,9 +21,9 @@ public class HomePager extends BasePager {
     @Override
     public void initData() {
         super.initData();
-        Log.e("TAG","主页预加载");
+        Log.e("TAG", "主页预加载");
         //设置标题
-        tv_title.setText("主页");
+        tvTitle.setText("主页");
         //内容
 
         TextView textView = new TextView(mContext);
@@ -34,6 +34,6 @@ public class HomePager extends BasePager {
 
 
         //和父类的FragmentLayout结合一起
-        fl_main.addView(textView);
+        flMain.addView(textView);
     }
 }

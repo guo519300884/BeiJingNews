@@ -20,10 +20,8 @@ import com.atguigu.beijingnews.detailpager.PhotosMenuDetailPager;
 import com.atguigu.beijingnews.detailpager.TopicMenuDetailPager;
 import com.atguigu.beijingnews.detailpager.VoteMenuDetailPager;
 import com.atguigu.beijingnews.fragment.LeftMenuFragment;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -47,9 +45,9 @@ public class NewsCentenrPager extends BasePager {
         super.initData();
         Log.e("TAG", "新闻预加载");
         //显示菜单按钮
-        ib_menu.setVisibility(View.VISIBLE);
+        ibMenu.setVisibility(View.VISIBLE);
         //标题
-        tv_title.setText("新闻");
+        tvTitle.setText("新闻");
         //内容
         TextView textView = new TextView(mContext);
         textView.setTextSize(20);
@@ -58,10 +56,10 @@ public class NewsCentenrPager extends BasePager {
         textView.setTextColor(Color.RED);
 
         //和父类的FragmentLayout结合一起
-        fl_main.addView(textView);
+        flMain.addView(textView);
 
         String savaJson = CacheUtils.getString(mContext, Constants.NEWSCENTER_PAGER_URL);
-        if(!TextUtils.isEmpty(savaJson)) {
+        if (!TextUtils.isEmpty(savaJson)) {
             processData(savaJson);
         }
 
@@ -76,7 +74,7 @@ public class NewsCentenrPager extends BasePager {
 
             @Override
             public void onSuccess(String result) {
-                CacheUtils.putString(mContext,Constants.NEWSCENTER_PAGER_URL,result);
+                CacheUtils.putString(mContext, Constants.NEWSCENTER_PAGER_URL, result);
                 Log.e("TAG", "请求成功+++" + result);
                 processData(result);
 
@@ -100,6 +98,7 @@ public class NewsCentenrPager extends BasePager {
         });
     }
 
+
     private void processData(String json) {
         //1.解析数据：手动解析（用系统的Api解析）和第三方解析json的框架（Gson,fastjson）
 //        Gson gson = new Gson();
@@ -119,9 +118,11 @@ public class NewsCentenrPager extends BasePager {
         //2.绑定数据
         menuDetailBasePagers = new ArrayList<>();
 //        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity));//新闻
-        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity,dataBeanList.get(0)));//新闻详情页
+        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity, dataBeanList.get(0)));//新闻详情页
+        Log.e("QQ", dataBeanList.get(0).getUrl() + "dataBeanList.get(0).getUrl()");
         menuDetailBasePagers.add(new TopicMenuDetailPager(mainActivity));//专题
-        menuDetailBasePagers.add(new PhotosMenuDetailPager(mainActivity));//图片
+        menuDetailBasePagers.add(new PhotosMenuDetailPager(mainActivity, dataBeanList.get(2)));//图片
+        Log.e("QQ", dataBeanList.get(2).getUrl() + "dataBeanList.get(2)");
         menuDetailBasePagers.add(new InteracMenuDetailPager(mainActivity));//互动
         menuDetailBasePagers.add(new VoteMenuDetailPager(mainActivity));//投票
         //调用LeftMenuFragment的setData
@@ -140,70 +141,74 @@ public class NewsCentenrPager extends BasePager {
 
         NewsCenterBean centerBean = new NewsCenterBean();
 
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            int retcode = jsonObject.optInt("retcode");
-            centerBean.setRetcode(retcode);
-            JSONArray data = jsonObject.optJSONArray("data");
+        //Gson 解析
+        return new Gson().fromJson(json, NewsCenterBean.class);
 
-            //数据集合
-            List<NewsCenterBean.DataBean> dataBeans = new ArrayList<>();
-            centerBean.setData(dataBeans);
-
-            for (int i = 0; i<data.length();i++){
-                JSONObject itemObject = (JSONObject) data.get(i);
-                if(itemObject != null) {
-
-                    //集合装入数据
-                    NewsCenterBean.DataBean itemBean = new NewsCenterBean.DataBean();
-                    dataBeans.add(itemBean);
-
-                    int id = itemObject.optInt("id");
-                    itemBean.setId(id);
-                    String title = itemObject.optString("title");
-                    itemBean.setTitle(title);
-                    int type = itemObject.optInt("type");
-                    itemBean.setType(type);
-                    String url = itemObject.optString("url");
-                    itemBean.setUrl(url);
-                    String url1 = itemObject.optString("url1");
-                    itemBean.setUrl(url1);
-                    String excurl = itemObject.optString("excurl");
-                    itemBean.setExcurl(excurl);
-                    String dayurl = itemObject.optString("dayurl");
-                    itemBean.setDayurl(dayurl);
-                    String weekurl = itemObject.optString("weekurl");
-                    itemBean.setWeekurl(weekurl);
-
-                    JSONArray children = itemObject.optJSONArray("children");
-
-                    if(children != null && children.length()>0) {
-                        //设置children的数据
-                        List<NewsCenterBean.DataBean.ChildrenBean> childrenBeans = new ArrayList<>();
-                        itemBean.setChildren(childrenBeans);
-                        for (int j = 0;j<children.length();j++){
-
-                            NewsCenterBean.DataBean.ChildrenBean childrenBean = new NewsCenterBean.DataBean.ChildrenBean();
-                            //添加到集合中
-                            childrenBeans.add(childrenBean);
-                            JSONObject childrenObje = (JSONObject) children.get(j);
-                            int idc = childrenObje.optInt("id");
-                            childrenBean.setId(idc);
-                            String titlec = childrenObje.optString("title");
-                            childrenBean.setTitle(titlec);
-                            int typec = childrenObje.optInt("type");
-                            childrenBean.setType(typec);
-                            String urlc = childrenObje.optString("url");
-                            childrenBean.setUrl(urlc);
-                        }
-                    }
-
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return centerBean;
+        //手动解析
+//        try {
+//            JSONObject jsonObject = new JSONObject(json);
+//            int retcode = jsonObject.optInt("retcode");
+//            centerBean.setRetcode(retcode);
+//            JSONArray data = jsonObject.optJSONArray("data");
+//
+//            //数据集合
+//            List<NewsCenterBean.DataBean> dataBeans = new ArrayList<>();
+//            centerBean.setData(dataBeans);
+//
+//            for (int i = 0; i < data.length(); i++) {
+//                JSONObject itemObject = (JSONObject) data.get(i);
+//                if (itemObject != null) {
+//
+//                    //集合装入数据
+//                    NewsCenterBean.DataBean itemBean = new NewsCenterBean.DataBean();
+//                    dataBeans.add(itemBean);
+//
+//                    int id = itemObject.optInt("id");
+//                    itemBean.setId(id);
+//                    String title = itemObject.optString("title");
+//                    itemBean.setTitle(title);
+//                    int type = itemObject.optInt("type");
+//                    itemBean.setType(type);
+//                    String url = itemObject.optString("url");
+//                    itemBean.setUrl(url);
+//                    String url1 = itemObject.optString("url1");
+//                    itemBean.setUrl1(url1);
+//                    String excurl = itemObject.optString("excurl");
+//                    itemBean.setExcurl(excurl);
+//                    String dayurl = itemObject.optString("dayurl");
+//                    itemBean.setDayurl(dayurl);
+//                    String weekurl = itemObject.optString("weekurl");
+//                    itemBean.setWeekurl(weekurl);
+//
+//                    JSONArray children = itemObject.optJSONArray("children");
+//
+//                    if (children != null && children.length() > 0) {
+//                        //设置children的数据
+//                        List<NewsCenterBean.DataBean.ChildrenBean> childrenBeans = new ArrayList<>();
+//                        itemBean.setChildren(childrenBeans);
+//                        for (int j = 0; j < children.length(); j++) {
+//
+//                            NewsCenterBean.DataBean.ChildrenBean childrenBean = new NewsCenterBean.DataBean.ChildrenBean();
+//                            //添加到集合中
+//                            childrenBeans.add(childrenBean);
+//                            JSONObject childrenObje = (JSONObject) children.get(j);
+//                            int idc = childrenObje.optInt("id");
+//                            childrenBean.setId(idc);
+//                            String titlec = childrenObje.optString("title");
+//                            childrenBean.setTitle(titlec);
+//                            int typec = childrenObje.optInt("type");
+//                            childrenBean.setType(typec);
+//                            String urlc = childrenObje.optString("url");
+//                            childrenBean.setUrl(urlc);
+//                        }
+//                    }
+//
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return centerBean;
     }
 
     /**
@@ -213,16 +218,30 @@ public class NewsCentenrPager extends BasePager {
      */
     public void switchPager(int prePosition) {
         //设置标题
-        tv_title.setText(dataBeanList.get(prePosition).getTitle());
+        tvTitle.setText(dataBeanList.get(prePosition).getTitle());
 
         MenuDetailBasePager menuDetailBasePager = menuDetailBasePagers.get(prePosition);
         //调用
         menuDetailBasePager.initData();
         //视图
         View rootview = menuDetailBasePager.rootView;
-        fl_main.removeAllViews();//移除之前所有的
-        fl_main.addView(rootview);
+        flMain.removeAllViews();//移除之前所有的
+        flMain.addView(rootview);
+        //判断是不是组图详情页
+        if (prePosition == 2) {
+            //是组图详情页就显示按钮
+            ibSwitch.setVisibility(View.VISIBLE);
+            //切换按钮样式
+            ibSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
+            //不是组图详情页不显示按钮
+        } else {
+            ibSwitch.setVisibility(View.GONE);
+        }
     }
 
 
