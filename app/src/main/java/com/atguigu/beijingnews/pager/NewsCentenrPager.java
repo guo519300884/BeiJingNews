@@ -225,8 +225,11 @@ public class NewsCentenrPager extends BasePager {
         menuDetailBasePager.initData();
         //视图
         View rootview = menuDetailBasePager.rootView;
+
         flMain.removeAllViews();//移除之前所有的
+
         flMain.addView(rootview);
+
         //判断是不是组图详情页
         if (prePosition == 2) {
             //是组图详情页就显示按钮
@@ -235,7 +238,8 @@ public class NewsCentenrPager extends BasePager {
             ibSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    PhotosMenuDetailPager photosMenuDetailPager = (PhotosMenuDetailPager) menuDetailBasePagers.get(2);
+                    photosMenuDetailPager.switchListGrid(ibSwitch);
                 }
             });
             //不是组图详情页不显示按钮
