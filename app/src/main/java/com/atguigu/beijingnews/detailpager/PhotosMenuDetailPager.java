@@ -1,12 +1,15 @@
 package com.atguigu.beijingnews.detailpager;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.atguigu.baselibrary.Constants;
 import com.atguigu.beijingnews.R;
@@ -32,12 +35,16 @@ import butterknife.InjectView;
 public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
     private final NewsCenterBean.DataBean dataBean;
-    //    @InjectView(R.id.listview)
+//    @InjectView(R.id.listview)
 //    ListView listview;
 //    @InjectView(R.id.gridview)
 //    GridView gridview;
+
     @InjectView(R.id.recyclerview)
     RecyclerView recyclerview;
+
+    @InjectView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private String url;
     private List<PohotosMenuBean.DataBean.NewsBean> news;
@@ -59,6 +66,21 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         //图组详情页面的视图
         View view = View.inflate(mContext, R.layout.photos_menu_detail_pager, null);
         ButterKnife.inject(this, view);
+
+        //设置下拉多少才有反应
+        swipeRefreshLayout.setDistanceToTriggerSync(100);
+        //设置背景颜色
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.holo_blue_bright);
+        //设置转圈的颜色
+        swipeRefreshLayout.setColorSchemeColors(Color.RED,Color.BLUE,Color.YELLOW);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(mContext, "拉我干啥", Toast.LENGTH_SHORT).show();
+                getDataFromNet();
+            }
+        });
+
         return view;
     }
 
@@ -78,6 +100,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
             public void onSuccess(String result) {
                 Log.e("TAG", "PhotosMenuDetailPager onSuccess()联网成了" + result);
                 processData(result);
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -124,16 +147,16 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
     public void switchListGrid(ImageButton ibSwitch) {
 
-        adapter = new PhotosMenuDetailPagerAdapter(mContext,news,recyclerview);
+        adapter = new PhotosMenuDetailPagerAdapter(mContext, news, recyclerview);
         recyclerview.setAdapter(adapter);
 
-        if(isShowListView) {
-            recyclerview.setLayoutManager(new GridLayoutManager(mContext,2,LinearLayoutManager.VERTICAL,false));
+        if (isShowListView) {
+            recyclerview.setLayoutManager(new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false));
             //按钮是list
             ibSwitch.setImageResource(R.drawable.icon_pic_list_type);
             isShowListView = false;
-        }else {
-            recyclerview.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
+        } else {
+            recyclerview.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
             //按钮是 grid
             ibSwitch.setImageResource(R.drawable.icon_pic_grid_type);
             isShowListView = true;
