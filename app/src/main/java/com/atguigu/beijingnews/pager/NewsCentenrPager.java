@@ -120,7 +120,7 @@ public class NewsCentenrPager extends BasePager {
 //        menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity));//新闻
         menuDetailBasePagers.add(new NewsMenuDetailPager(mainActivity, dataBeanList.get(0)));//新闻详情页
         Log.e("QQ", dataBeanList.get(0).getUrl() + "dataBeanList.get(0).getUrl()");
-        menuDetailBasePagers.add(new TopicMenuDetailPager(mainActivity));//专题
+        menuDetailBasePagers.add(new TopicMenuDetailPager(mainActivity, dataBeanList.get(0)));//专题
         menuDetailBasePagers.add(new PhotosMenuDetailPager(mainActivity, dataBeanList.get(2)));//图片
         Log.e("QQ", dataBeanList.get(2).getUrl() + "dataBeanList.get(2)");
         menuDetailBasePagers.add(new InteracMenuDetailPager(mainActivity));//互动
