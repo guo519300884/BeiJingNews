@@ -9,6 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Android-Universal-Image-Loader" />
+            <option value="$PROJECT_DIR$/Android-Universal-Image-Loader_library" />
             <option value="$PROJECT_DIR$/AndroidAndH5" />
             <option value="$PROJECT_DIR$/AndroidAndJs" />
             <option value="$PROJECT_DIR$/Baselibrary" />

@@ -1,4 +1,4 @@
-include ':app', ':Baselibrary', ':PhotoView_library', ':AndroidAndH5', ':AndroidAndJs', ':JPushExample(586178)'
+include ':app', ':Baselibrary', ':PhotoView_library', ':AndroidAndH5', ':AndroidAndJs', ':JPushExample(586178)', ':Android-Universal-Image-Loader', ':Android-Universal-Image-Loader_library'
 include ':SlidingMenu_library'
 include ':ViewPagerIndicator_library'
 include ':ViewPagerIndicator_sample'

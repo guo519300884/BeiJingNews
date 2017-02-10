@@ -18,6 +18,9 @@ import com.atguigu.baselibrary.NetCacheUtils;
 import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.activity.PicassoSampleActivity;
 import com.atguigu.beijingnews.bean.PohotosMenuBean;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.List;
 
@@ -62,12 +65,24 @@ public class PhotosMenuDetailPagerAdapter extends RecyclerView.Adapter<PhotosMen
     private final Context mContext;
     private final List<PohotosMenuBean.DataBean.NewsBean> datas;
     private BitmapCacheUtils bitmapCacheUtils;
+    private DisplayImageOptions options;
 
     public PhotosMenuDetailPagerAdapter(Context mContext, List<PohotosMenuBean.DataBean.NewsBean> news, RecyclerView recyclerview) {
         this.mContext = mContext;
         this.datas = news;
         this.recyclerview = recyclerview;
         bitmapCacheUtils = new BitmapCacheUtils(handler);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.news_pic_default)
+                .showImageForEmptyUri(R.drawable.news_pic_default)
+                .showImageOnFail(R.drawable.news_pic_default)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(10))
+                .build();
     }
 
 
@@ -90,15 +105,19 @@ public class PhotosMenuDetailPagerAdapter extends RecyclerView.Adapter<PhotosMen
 //                .error(R.drawable.news_pic_default)
 //                .into(holder.ivIcon);
 
-        //三级缓存图片
+        //imagerLoader加载图片
+
+        ImageLoader.getInstance().displayImage(Constants.BASE_URL + newsEntity.getListimage(), holder.ivIcon, options);
+
+        //自定义三级缓存图片
         //设置标识
-        holder.ivIcon.setTag(position);
-        Bitmap bitmap = bitmapCacheUtils.getBitmapFromNet(Constants.BASE_URL + newsEntity.getListimage(), position);
-        //内存或本地
-        if (bitmap != null) {
-            Log.e("TAG", "PhotosMenuDetailPagerAdapter onBindViewHolder()== 本地取图"+bitmap);
-            holder.ivIcon.setImageBitmap(bitmap);
-        }
+//        holder.ivIcon.setTag(position);
+//        Bitmap bitmap = bitmapCacheUtils.getBitmapFromNet(Constants.BASE_URL + newsEntity.getListimage(), position);
+//        //内存或本地
+//        if (bitmap != null) {
+//            Log.e("TAG", "PhotosMenuDetailPagerAdapter onBindViewHolder()== 本地取图" + bitmap);
+//            holder.ivIcon.setImageBitmap(bitmap);
+//        }
     }
 
     @Override
