@@ -7,6 +7,8 @@ import com.atguigu.baselibrary.DensityUtil;
 import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.fragment.ContentFragment;
 import com.atguigu.beijingnews.fragment.LeftMenuFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -63,6 +65,14 @@ public class MainActivity extends SlidingFragmentActivity {
     //获取 ContentFragment
     public ContentFragment getContentFragment(){
         return (ContentFragment) getSupportFragmentManager().findFragmentByTag(CONTENT_TAG);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (Util.isOnMainThread()) {
+            Glide.with(getApplicationContext()).pauseRequests();
+        }
+        super.onDestroy();
     }
 }
 

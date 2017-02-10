@@ -30,6 +30,7 @@ import com.atguigu.beijingnews.bean.TabDetailPagerBean;
 import com.atguigu.beijingnews.view.HorizontalScrollViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.Util;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -74,8 +75,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private String moreUrl;
     //是否加载更多数据
     private boolean isLoadMore = false;
-    private InternalHandler handler;
-
+    public InternalHandler handler;
     public TabDetailPager(Context context, NewsCenterBean.DataBean.ChildrenBean childrenBean) {
         super(context);
         this.childrenBean = childrenBean;
@@ -364,13 +364,15 @@ public class TabDetailPager extends MenuDetailBasePager {
             final TabDetailPagerBean.DataEntity.TopnewsBean topnewsBean = topnews.get(position);
 
             //加载轮播图片
-            Glide.with(mContext).load(Constants.BASE_URL + topnews.get(position).getTopimage())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    //设置默认图片
-                    .placeholder(R.drawable.news_pic_default)
-                    //请求失败图
-                    .error(R.drawable.news_pic_default)
-                    .into(imageView);
+            if (Util.isOnMainThread()) {
+                Glide.with(mContext.getApplicationContext()).load(Constants.BASE_URL + topnews.get(position).getTopimage())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        //设置默认图片
+                        .placeholder(R.drawable.news_pic_default)
+                        //请求失败图
+                        .error(R.drawable.news_pic_default)
+                        .into(imageView);
+            }
             //添加到 ViewPager中
             container.addView(imageView);
 
