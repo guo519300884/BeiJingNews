@@ -22,11 +22,17 @@ public class NetCacheUtils {
     //图片请求失败
     public static final int FAIL = 2;
     private final Handler handler;
+    //本地工具类
+    private final LocalCacheUtils localCacheUtils;
+    //内存工具类
+    private final MemoryCacheUtils memoryCacheUtils;
     private ExecutorService service;
 
-    public NetCacheUtils(Handler handler) {
+    public NetCacheUtils(Handler handler, LocalCacheUtils localCacheUtils, MemoryCacheUtils memoryCacheUtils) {
         this.handler = handler;
         service = Executors.newFixedThreadPool(10);
+        this.localCacheUtils = localCacheUtils;
+        this.memoryCacheUtils = memoryCacheUtils;
     }
 
     public void getBitmapFromNet(String url, int position) {
@@ -54,17 +60,17 @@ public class NetCacheUtils {
                 connection.setConnectTimeout(5000);
                 connection.connect();
                 int code = connection.getResponseCode();
-                
-                if(code == 200) {
+
+                if (code == 200) {
                     //请求图片成功
                     InputStream is = connection.getInputStream();
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
 
                     //成功后保存一份到本地
-
+                    localCacheUtils.putBitmap(url,bitmap);
                     //保存一份在内存中
-
-                   //将图片显示在控件上
+                    memoryCacheUtils.putBitmap(url,bitmap);
+                    //将图片显示在控件上
                     Message msg = Message.obtain();
                     msg.obj = bitmap;
                     msg.what = SECUSS;
