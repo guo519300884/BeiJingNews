@@ -71,7 +71,7 @@
         android:layout_marginRight="7dp"
         android:background="@android:color/transparent"
         android:src="@drawable/icon_pic_grid_type"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

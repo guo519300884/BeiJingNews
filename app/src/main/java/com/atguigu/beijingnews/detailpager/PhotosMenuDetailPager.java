@@ -147,9 +147,6 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
     public void switchListGrid(ImageButton ibSwitch) {
 
-        adapter = new PhotosMenuDetailPagerAdapter(mContext, news, recyclerview);
-        recyclerview.setAdapter(adapter);
-
         if (isShowListView) {
             recyclerview.setLayoutManager(new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false));
             //按钮是list

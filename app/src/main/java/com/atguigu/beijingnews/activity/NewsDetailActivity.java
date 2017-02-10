@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atguigu.beijingnews.R;
 
@@ -95,6 +96,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 showChangeTextSizeDialog();
                 break;
             case R.id.ib_share:
+                Toast.makeText(NewsDetailActivity.this, "分享呀", Toast.LENGTH_SHORT).show();
 
                 break;
         }
