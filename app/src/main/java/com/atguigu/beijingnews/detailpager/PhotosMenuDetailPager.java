@@ -6,11 +6,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.atguigu.baselibrary.CacheUtils;
 import com.atguigu.baselibrary.Constants;
 import com.atguigu.beijingnews.R;
 import com.atguigu.beijingnews.adapter.PhotosMenuDetailPagerAdapter;
@@ -72,7 +74,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         //设置背景颜色
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.holo_blue_bright);
         //设置转圈的颜色
-        swipeRefreshLayout.setColorSchemeColors(Color.RED,Color.BLUE,Color.YELLOW);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.YELLOW);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -89,6 +91,12 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         super.initData();
         url = Constants.BASE_URL + dataBean.getUrl();
         Log.e("TAG", "6666666666666666666666" + url);
+
+        String saveJson = CacheUtils.getString(mContext, url);
+        if (!TextUtils.isEmpty(saveJson)) {
+            processData(saveJson);
+        }
+
         getDataFromNet();
     }
 
@@ -98,6 +106,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                CacheUtils.putString(mContext, url, result);
                 Log.e("TAG", "PhotosMenuDetailPager onSuccess()联网成了" + result);
                 processData(result);
                 swipeRefreshLayout.setRefreshing(false);

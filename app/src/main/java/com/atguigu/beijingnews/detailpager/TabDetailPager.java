@@ -197,6 +197,10 @@ public class TabDetailPager extends MenuDetailBasePager {
     public void initData() {
         super.initData();
         url = Constants.BASE_URL + childrenBean.getUrl();
+        String saveJson = CacheUtils.getString(mContext, url);
+        if (!TextUtils.isEmpty(saveJson)) {
+            processData(saveJson);
+        }
         //设置数据
         getDataFromNet();
     }
@@ -208,9 +212,11 @@ public class TabDetailPager extends MenuDetailBasePager {
             @Override
             public void onSuccess(String result) {
                 Log.e("TAG", "请求数据成功==TabDetailPager==" + childrenBean.getTitle());
+                CacheUtils.putString(mContext, url, result);
                 processData(result);
                 //将下拉&上滑隐藏
                 pullRefreshList.onRefreshComplete();
+
             }
 
             @Override
@@ -374,8 +380,8 @@ public class TabDetailPager extends MenuDetailBasePager {
                 @Override
                 public void onClick(View v) {
                     //跳转顶部图片新闻详情页
-                    Intent intent = new Intent(mContext,NewsDetailActivity.class);
-                    intent.putExtra("url",Constants.BASE_URL+ topnewsBean.getUrl());
+                    Intent intent = new Intent(mContext, NewsDetailActivity.class);
+                    intent.putExtra("url", Constants.BASE_URL + topnewsBean.getUrl());
                     mContext.startActivity(intent);
                 }
             });
